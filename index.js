@@ -1,12 +1,10 @@
-"use strict";
-
 /*
 Authors:
 Linda Matilde Rodriguez -
-Cristhian Chamorro - 
+Cristhian Chamorro - 201511134
 Oscar Augusto Rojas Cruz - 201521379
 */
-const express = require("express");
+const express = require('express');
 const server = express();
 const port = 3000;
 
@@ -42,6 +40,41 @@ server.post("/users", (req, res) => {
   let user = { name: name, code: idUser };
   users.push(user);
   res.send(users);
+});
+
+//MI servicio de libros, pide un libro y si esta en la lista no lo agrega
+let books = [
+  { book: "la divina comedia", code: 111 },
+  { book: "takeuchi", code: 112 },
+  { book: "narnia", code: 113 },
+  { book: "el camino", code: 114 },
+  { book: "Juana de arco", code: 115 },
+];
+
+
+server.get("/books", (req, res) => {
+  res.send(books);
+});
+
+server.post("/books", (req, res) => {
+  var i;
+  let bodyR = req.body;
+  let bookN = bodyR.book;
+  let codeB = bodyR.code;
+  let book = { book: bookN, code: codeB };
+  var aux=false;
+  for (i = 0; i < books.length; i++) {
+    if (books[i].book==bookN) {
+      aux = true;
+    }
+  }
+  if(aux){
+    res.send("El libro no se agrego");
+  }else{
+    books.push(book);
+    res.send("El libro " +bookN+ " se agrego correctamente");
+    
+  }
 });
 
 server.listen(port, () => {
